@@ -8,24 +8,52 @@ router.post('/signup', (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
       if (user) {
-        return res.status(400).json({email: "There is already an account associated with that email"})
+        return res.status(425).json({email: "There is already an account associated with that email"})
       } else {
-        const newUser = new User({
-          username: req.body.username,
-          email: req.body.email,
-          password: req.body.password
-        })
-
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(newUser.password, salt, (err, hash) => {
-            if (err) throw err;
-            newUser.password = hash;
-            newUser.save()
-              .then(user => res.json(user))
-              .catch(err => console.log(err));
-          })
+        User.findOne({ username: req.body.username })
+        .then(user => {
+          if (user) {
+            return res.status(425).json({username: "There is already an account associated with that username"})
+          } else {
+            const newUser = new User({
+              username: req.body.username,
+              email: req.body.email,
+              password: req.body.password
+            })
+    
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if (err) throw err;
+                newUser.password = hash;
+                newUser.save()
+                  .then(user => res.json(user))
+                  .catch(err => console.log(err));
+              })
+            })
+          }
         })
       }
+    })
+})
+
+router.post('/login', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  User.findOne({email})
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({email: 'This user does not exist'});
+      }
+
+      bcrypt.compare(password, user.password)
+        .then(isMatch => {
+          if (isMatch) {
+            res.json({msg: 'Success'});
+          } else {
+            return res.status(400).json({password: 'Incorrect password'});
+          }
+        })
     })
 })
 
