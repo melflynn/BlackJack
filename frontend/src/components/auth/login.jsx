@@ -1,4 +1,4 @@
-import { TextField } from '@material-ui/core'
+import { TextField, Button } from '@material-ui/core'
 import styled from 'styled-components'
 
 const LoginForm = styled.div`
@@ -32,6 +32,14 @@ const Login = () => {
                 label="Password"
                 type="password"
             />
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+            >
+                Log in
+            </Button>
             </form>
         </LoginForm>
     )
