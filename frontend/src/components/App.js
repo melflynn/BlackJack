@@ -1,19 +1,26 @@
+import { Switch, Route } from 'react-router-dom';
+import NavBar from './navbar/navbar';
+import Splash from './splash/splash'
+import Login from './auth/login'
+
+
+function homeComponent() {
+  return (
+    <div>
+      home
+    </div>
+  )
+}
+
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <NavBar />
+      <Switch>
+        <Route exact path="/" component={Splash} />
+        <Route exact path="/home" component={homeComponent} />
+        <Route path="/login" component={Login} />
+      </Switch>
     </div>
   );
 }
