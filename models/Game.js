@@ -6,6 +6,11 @@ const GameSchema = new Schema({
     type: Array, 
     required: true
   },
+  deck: {
+    type: Object,
+    required: true
+
+  },
   timestamps: true
 })
 
