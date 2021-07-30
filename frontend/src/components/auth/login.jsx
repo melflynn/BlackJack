@@ -1,5 +1,6 @@
-import { TextField, Button } from '@material-ui/core'
+import { TextField, Button, Link } from '@material-ui/core'
 import styled from 'styled-components'
+import { useState } from 'react'
 
 const LoginForm = styled.div`
     display: flex;
@@ -11,18 +12,36 @@ const LoginForm = styled.div`
     form {
         width: 100%
     }
+
+    button {
+        margin: 10px 0 10px 0;
+    }
+
+    div {
+        display: flex;
+        justify-content: flex-end;
+    }
 `
 const Login = () => {
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        console.log(username, password)
+    }
     return (
-        <LoginForm>
-            Sign in
+        <LoginForm onSubmit={(e) => handleSubmit(e)}>
+            Log in
             <form>
                 <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                label="Email Address"
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 />
             <TextField
                 variant="outlined"
@@ -31,6 +50,8 @@ const Login = () => {
                 fullWidth
                 label="Password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
             />
             <Button
                 type="submit"
@@ -40,6 +61,12 @@ const Login = () => {
             >
                 Log in
             </Button>
+            
+            <div>
+                <Link href="/#/signup" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                </Link>
+            </div>
             </form>
         </LoginForm>
     )
