@@ -10,8 +10,6 @@
 }
 
 .intro {
-  /* display: flex; */
-  /* justify-content: center; */
   position: fixed;
   color: #FFFFFF;
   z-index: 1;
@@ -69,18 +67,16 @@
 }
 
 
-@media (min-width: 1800px) {
-  .rules {
-    position: absolute;
-    padding-left: 150px;
-    top: 100px;
-    right: 180px;
-  }
+.rules {
+  position: absolute;
+  padding-left: 150px;
+  top: 100px;
+  right: 180px;
+}
 
-  .rules-bullet {
-    font-size: 24px;
-    font-weight: 400;
-  }
+.rules-bullet {
+  font-size: 24px;
+  font-weight: 400;
 }
 
 @media (max-width: 1800px) {
@@ -94,6 +90,12 @@
   .intro {
     padding-left: 60px;
     font-size: 44px;
+    width: 650px;
+  }
+
+  @keyframes typing {
+    from { width: 0px }
+    to { width: 650px }
   }
 
   .get-started {
