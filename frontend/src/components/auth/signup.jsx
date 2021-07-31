@@ -1,6 +1,7 @@
 import { TextField, Button, Link, Grid} from '@material-ui/core'
 import styled from 'styled-components'
 import { useState } from 'react'
+import { signup } from '../../util/session_util';
 
 const SignupForm = styled.div`
     display: flex;
@@ -23,7 +24,7 @@ const SignupForm = styled.div`
         justify-content: flex-end;
     }
 `
-const Signup = () => {
+const Signup = (props) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [firstName, setFirstName] = useState('')
@@ -31,7 +32,12 @@ const Signup = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        console.log(username, password, firstName, lastName)
+        // console.log(username, password, firstName, lastName)
+        let user = {
+            username,
+            password
+        }
+        props.signup(user);
     }
     return (
         <SignupForm onSubmit={(e) => handleSubmit(e)}>
