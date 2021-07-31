@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import NavBar from './navbar/navbar';
 import Splash from './splash/splash';
 import SignupContainer from './auth/signup_container';
