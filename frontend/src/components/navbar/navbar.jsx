@@ -8,17 +8,23 @@ const StyledNav = styled.div`
     background-color: lightblue;
     display: flex;
     justify-content: space-between;
+    font-family: 'Roboto Mono', monospace;
 
-    > span {
-        margin: auto 5px;
+    span {
+        margin: auto 10px;
         font-weight: 600;
+        font-family: 'Roboto Mono', monospace;
+    }
+
+    > span:hover {
+        cursor: pointer;
     }
 
     div {
         margin: auto 0;
 
         button {
-            margin: 0 5px;
+            margin: 0 10px;
         }
     }
 `
@@ -28,11 +34,8 @@ function NavBar() {
 
     return (
         <StyledNav>
-            <span>BLACKJACK</span>
+            <span onClick={() => hist.push('/')}>BLACKJACK</span>
             <div>
-                <Button variant="contained" color="primary" onClick={() => hist.push('/')}>
-                    Splash
-                </Button>
                 <Button variant="contained" color="primary" onClick={() => hist.push('/home')}>
                     Home
                 </Button>
