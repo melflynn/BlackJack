@@ -1,5 +1,5 @@
 const Validator = require('validator');
-const validText = require('./validText');
+const validText = require('./valid_text');
 
 module.exports = function validateSignupInput(data) {
   let errors = {};

@@ -1,6 +1,6 @@
 import { TextField, Button, Link } from '@material-ui/core'
 import styled from 'styled-components'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 const LoginForm = styled.div`
     display: flex;
@@ -22,13 +22,17 @@ const LoginForm = styled.div`
         justify-content: flex-end;
     }
 `
-const Login = () => {
+const Login = (props) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        console.log(username, password)
+        let user = {
+            username,
+            password
+        }
+        props.login(user);
     }
     return (
         <LoginForm onSubmit={(e) => handleSubmit(e)}>
