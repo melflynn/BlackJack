@@ -3,6 +3,7 @@ import NavBar from './navbar/navbar';
 import Splash from './splash/splash'
 import Login from './auth/login'
 import Signup from './auth/signup'
+import { AuthRoute, ProtectedRoute } from '../util/routeUtil'
 
 
 function homeComponent() {
@@ -18,10 +19,10 @@ function App() {
     <div>
       <NavBar />
       <Switch>
-        <Route exact path="/" component={Splash} />
-        <Route exact path="/home" component={homeComponent} />
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
+        <AuthRoute exact path="/" component={Splash} />
+        <ProtectedRoute exact path="/home" component={homeComponent} />
+        <AuthRoute path="/login" component={Login} />
+        <AuthRoute path="/signup" component={Signup} />
       </Switch>
     </div>
   );
