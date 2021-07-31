@@ -38,7 +38,7 @@ router.post('/signup', (req, res) => {
                 newUser.password = hash;
                 newUser.save()
                   .then(user => {
-                    const payload = { id: user.id, handle: user.handle };
+                    const payload = { id: user.id, username: user.username };
 
                     jwt.sign(payload, 
                       keys.secretOrKey, 
