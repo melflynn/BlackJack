@@ -1,24 +1,22 @@
 const Validator = require('validator');
-const validText = require('./valid_text');
+const validText = require('./validText');
 
 module.exports = function validateSignupInput(data) {
   let errors = {};
 
-  data.handle = validText(data.handle) ? data.handle : '';
-  data.email = validText(data.email) ? data.email : '';
+  data.username = validText(data.username) ? data.username : '';
   data.password = validText(data.password) ? data.password : '';
-  data.password2 = validText(data.password2) ? data.password2 : '';
 
-  if (!Validator.isLength(data.handle, { min: 2, max: 30 })) {
-    errors.handle = 'Handle must be between 2 and 30 characters';
+  if (!Validator.isLength(data.username, { min: 2, max: 30 })) {
+    errors.username = 'Username must be between 2 and 30 characters';
   }
 
-  if (Validator.isEmpty(data.handle)) {
-    errors.handle = 'Handle field is required';
+  if (Validator.isEmpty(data.username)) {
+    errors.username = 'Username field is required';
   }
 
   if (Validator.isEmpty(data.email)) {
-    errors.email = 'Email field is required';
+    errors.email = 'Email is required';
   }
 
   if (!Validator.isEmail(data.email)) {
@@ -34,7 +32,7 @@ module.exports = function validateSignupInput(data) {
   }
 
   if (Validator.isEmpty(data.password2)) {
-    errors.password2 = 'Confirm Password field is required';
+    errors.password2 = 'Confirm password is required';
   }
 
   if (!Validator.equals(data.password, data.password2)) {

@@ -1,5 +1,6 @@
-import { TextField } from '@material-ui/core'
+import { TextField, Button, Link } from '@material-ui/core'
 import styled from 'styled-components'
+import React, { useState } from 'react'
 
 const LoginForm = styled.div`
     display: flex;
@@ -11,18 +12,40 @@ const LoginForm = styled.div`
     form {
         width: 100%
     }
+
+    button {
+        margin: 10px 0 10px 0;
+    }
+
+    div {
+        display: flex;
+        justify-content: flex-end;
+    }
 `
-const Login = () => {
+const Login = (props) => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        let user = {
+            email,
+            password
+        }
+        props.login(user);
+    }
     return (
-        <LoginForm>
-            Sign in
+        <LoginForm onSubmit={(e) => handleSubmit(e)}>
+            Log in
             <form>
                 <TextField
                 variant="outlined"
                 margin="normal"
                 required
                 fullWidth
-                label="Email Address"
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 />
             <TextField
                 variant="outlined"
@@ -31,7 +54,23 @@ const Login = () => {
                 fullWidth
                 label="Password"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
             />
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+            >
+                Log in
+            </Button>
+            
+            <div>
+                <Link href="/#/signup" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                </Link>
+            </div>
             </form>
         </LoginForm>
     )
