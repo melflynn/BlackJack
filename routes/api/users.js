@@ -16,48 +16,47 @@ router.post('/signup', (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.email })
+  User.findOne({ email: req.body.username })
     .then(user => {
       if (user) {
-        return res.status(425).json({email: "There is already an account associated with that email"})
+        return res.status(425).json({username: "There is already an account associated with that username"})
       } else {
-        User.findOne({ username: req.body.username })
-        .then(user => {
-          if (user) {
-            return res.status(425).json({username: "There is already an account associated with that username"})
-          } else {
-            const newUser = new User({
-              username: req.body.username,
-              email: req.body.email,
-              password: req.body.password
-            })
-    
-            bcrypt.genSalt(10, (err, salt) => {
-              bcrypt.hash(newUser.password, salt, (err, hash) => {
-                if (err) throw err;
-                newUser.password = hash;
-                newUser.save()
-                  .then(user => {
-                    const payload = { id: user.id, handle: user.handle };
+          let password = req.body.password;
+          const newUser = new User({
+            username: req.body.username,
+            password: req.body.password
+          })
+  
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              newUser.save()
+                .then(user => {
+                  const payload = { id: user.id, username: user.username };
 
-                    jwt.sign(payload, 
-                      keys.secretOrKey, 
-                      { expiresIn: 3600 }, 
-                      (err, token) => {
-                        res.json({
-                          success: true,
-                          token: "Bearer " + token
-                        });
-                    });
+                  jwt.sign(payload, 
+                    keys.secretOrKey, 
+                    { expiresIn: 3600 }, 
+                    (err, token) => {
+                      res.json({
+                        success: true,
+                        token: "Bearer " + token
+                      });
+                  });
+                })
+                .then(() => {
+                  return res.status(200).json({
+                    username: newUser.username,
+                    password
                   })
-                  .catch(err => console.log(err));
-              })
+                })
+                .catch(err => console.log(err));
             })
-          }
-        })
-      }
-    })
-})
+          })
+        }
+      })
+  })
 
 //login
 router.post('/login', (req, res) => {
@@ -67,19 +66,19 @@ router.post('/login', (req, res) => {
     return res.status(400).json(errors);
   }
 
-  const email = req.body.email;
+  const username = req.body.username;
   const password = req.body.password;
 
-  User.findOne({email})
+  User.findOne({username})
     .then(user => {
       if (!user) {
-        return res.status(404).json({email: 'This user does not exist'});
+        return res.status(404).json({username: 'This user does not exist'});
       }
 
       bcrypt.compare(password, user.password)
         .then(isMatch => {
           if (isMatch) {
-            const payload = {id: user.id, handle: user.handle};
+            const payload = {id: user.id, username: user.username};
 
             jwt.sign(
               payload,
@@ -106,7 +105,6 @@ router.get('/current',
     res.json({
       id: req.user.id,
       username: req.user.username,
-      email: req.user.email
     });
   }
 );
