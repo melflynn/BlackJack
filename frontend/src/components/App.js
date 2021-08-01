@@ -4,23 +4,9 @@ import Splash from './splash/splash';
 import SignupContainer from './auth/signup_container';
 import LoginContainer from './auth/login_container';
 import { AuthRoute, ProtectedRoute, DefaultRoute } from '../util/route_util'
+import Home from './home/home'
+import Game from './game/game'
 
-
-function HomeComponent() {
-  return (
-    <div>
-      yo yo ma
-    </div>
-  )
-}
-
-function GameComponent() {
-  return (
-    <div>
-      this is the game
-    </div>
-  )
-}
 
 function App() {
   return (
@@ -30,8 +16,10 @@ function App() {
         <AuthRoute exact path="/" component={Splash} />
         <AuthRoute path="/login" component={LoginContainer} />
         <AuthRoute path="/signup" component={SignupContainer} />
-        <ProtectedRoute exact path="/home" component={HomeComponent} />
-        <ProtectedRoute exact path="/game" component={GameComponent} />
+        <ProtectedRoute exact path="/home" component={Home} />
+
+        {/* This will be changed, final route should be /game/:gameid */}
+        <ProtectedRoute exact path="/game" component={Game} />
         <DefaultRoute path="*" />
       </Switch>
     </div>
