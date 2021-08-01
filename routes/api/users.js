@@ -16,43 +16,51 @@ router.post('/signup', (req, res) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.username })
+  User.findOne({ email: req.body.email })
     .then(user => {
       if (user) {
-        return res.status(425).json({username: "There is already an account associated with that username"})
+        return res.status(425).json({email: "There is already an account associated with that email"})
       } else {
-          let password = req.body.password;
-          const newUser = new User({
-            username: req.body.username,
-            password: req.body.password
-          })
-  
-          bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-              if (err) throw err;
-              newUser.password = hash;
-              newUser.save()
-                .then(user => {
-                  const payload = { id: user.id, username: user.username };
-
-                  jwt.sign(payload, 
-                    keys.secretOrKey, 
-                    { expiresIn: 3600 }, 
-                    (err, token) => {
-                      res.json({
-                        success: true,
-                        token: "Bearer " + token
+          User.findOne({ username: req.body.username })
+          .then(user => {
+            if (user) {
+              return res.status(425).json({username: "There is already an account associated with that username"})
+            } else {
+              let password = req.body.password;
+              const newUser = new User({
+                email: req.body.email,
+                username: req.body.username,
+                password: req.body.password
+              })
+      
+              bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                  if (err) throw err;
+                  newUser.password = hash;
+                  newUser.save()
+                    .then(user => {
+                      const payload = { id: user.id, username: user.username };
+    
+                      jwt.sign(payload, 
+                        keys.secretOrKey, 
+                        { expiresIn: 3600 }, 
+                        (err, token) => {
+                          res.json({
+                            success: true,
+                            token: "Bearer " + token
+                          });
                       });
-                  });
+                    })
+                    .then(() => {
+                      return res.status(200).json({
+                        username: newUser.username,
+                        password
+                      })
+                    })
+                    .catch(err => console.log(err));
                 })
-                .then(() => {
-                  return res.status(200).json({
-                    username: newUser.username,
-                    password
-                  })
-                })
-                .catch(err => console.log(err));
-            })
+              })
+            }
           })
         }
       })
@@ -66,13 +74,13 @@ router.post('/login', (req, res) => {
     return res.status(400).json(errors);
   }
 
-  const username = req.body.username;
+  const email = req.body.email;
   const password = req.body.password;
 
-  User.findOne({username})
+  User.findOne({email})
     .then(user => {
       if (!user) {
-        return res.status(404).json({username: 'This user does not exist'});
+        return res.status(404).json({email: 'This user does not exist'});
       }
 
       bcrypt.compare(password, user.password)
