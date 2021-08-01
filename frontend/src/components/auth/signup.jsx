@@ -1,7 +1,6 @@
-import { TextField, Button, Link, Grid} from '@material-ui/core'
+import { TextField, Button, Link } from '@material-ui/core'
 import styled from 'styled-components'
 import { useState } from 'react'
-import { signup } from '../../util/session_util';
 
 const SignupForm = styled.div`
     display: flex;
@@ -25,17 +24,18 @@ const SignupForm = styled.div`
     }
 `
 const Signup = (props) => {
+    const [email, setEmail] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
+    const [password2, setPassword2] = useState('')
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        // console.log(username, password, firstName, lastName)
         let user = {
+            email,
             username,
-            password
+            password,
+            password2
         }
         props.signup(user);
     }
@@ -43,23 +43,24 @@ const Signup = (props) => {
         <SignupForm onSubmit={(e) => handleSubmit(e)}>
             Sign up
             <form>
-                <Grid container spacing={2}> 
-                    <Grid item xs={12} sm={6}>
-                        <TextField label='First name' required variant="outlined" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <TextField label='Last name' required variant="outlined" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                    </Grid>
-                </Grid>
                 <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                label="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                />
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    label="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    label="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    />
                 <TextField
                     variant="outlined"
                     margin="normal"
@@ -69,7 +70,17 @@ const Signup = (props) => {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                />
+                    />
+                <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    label="Confirm password"
+                    type="password"
+                    value={password2}
+                    onChange={(e) => setPassword2(e.target.value)}
+                    />
                 <Button
                     type="submit"
                     fullWidth

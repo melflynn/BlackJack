@@ -23,13 +23,13 @@ const LoginForm = styled.div`
     }
 `
 const Login = (props) => {
-    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
     const handleSubmit = (event) => {
         event.preventDefault()
         let user = {
-            username,
+            email,
             password
         }
         props.login(user);
@@ -43,9 +43,9 @@ const Login = (props) => {
                 margin="normal"
                 required
                 fullWidth
-                label="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 />
             <TextField
                 variant="outlined"
