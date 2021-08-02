@@ -21,43 +21,50 @@ router.post('/signup', (req, res) => {
       if (user) {
         return res.status(425).json({email: "There is already an account associated with that email"})
       } else {
-        User.findOne({ username: req.body.username })
-        .then(user => {
-          if (user) {
-            return res.status(425).json({username: "There is already an account associated with that username"})
-          } else {
-            const newUser = new User({
-              username: req.body.username,
-              email: req.body.email,
-              password: req.body.password
-            })
-    
-            bcrypt.genSalt(10, (err, salt) => {
-              bcrypt.hash(newUser.password, salt, (err, hash) => {
-                if (err) throw err;
-                newUser.password = hash;
-                newUser.save()
-                  .then(user => {
-                    const payload = { id: user.id, username: user.username };
-
-                    jwt.sign(payload, 
-                      keys.secretOrKey, 
-                      { expiresIn: 3600 }, 
-                      (err, token) => {
-                        res.json({
-                          success: true,
-                          token: "Bearer " + token
-                        });
-                    });
-                  })
-                  .catch(err => console.log(err));
+          User.findOne({ username: req.body.username })
+          .then(user => {
+            if (user) {
+              return res.status(425).json({username: "There is already an account associated with that username"})
+            } else {
+              let password = req.body.password;
+              const newUser = new User({
+                email: req.body.email,
+                username: req.body.username,
+                password: req.body.password
               })
-            })
-          }
-        })
-      }
-    })
-})
+      
+              bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                  if (err) throw err;
+                  newUser.password = hash;
+                  newUser.save()
+                    .then(user => {
+                      const payload = { id: user.id, username: user.username };
+    
+                      jwt.sign(payload, 
+                        keys.secretOrKey, 
+                        { expiresIn: 3600 }, 
+                        (err, token) => {
+                          res.json({
+                            success: true,
+                            token: "Bearer " + token
+                          });
+                      });
+                    })
+                    .then(() => {
+                      return res.status(200).json({
+                        username: newUser.username,
+                        password
+                      })
+                    })
+                    .catch(err => console.log(err));
+                })
+              })
+            }
+          })
+        }
+      })
+  })
 
 //login
 router.post('/login', (req, res) => {
@@ -79,7 +86,7 @@ router.post('/login', (req, res) => {
       bcrypt.compare(password, user.password)
         .then(isMatch => {
           if (isMatch) {
-            const payload = {id: user.id, handle: user.handle};
+            const payload = {id: user.id, username: user.username};
 
             jwt.sign(
               payload,
@@ -106,7 +113,6 @@ router.get('/current',
     res.json({
       id: req.user.id,
       username: req.user.username,
-      email: req.user.email
     });
   }
 );
