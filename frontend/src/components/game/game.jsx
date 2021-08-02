@@ -1,5 +1,6 @@
-import {useState} from 'react';
-import styled from 'styled-components'
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import io from 'socket.io-client';
 
 const InformationWrapper = styled.div`
     width: 70%;
@@ -57,6 +58,31 @@ const Game = (props) => {
     const [balance, setBalance] = useState(1000);
     const [hand, setHand] = useState([]);
     const [players, setPlayers] = useState([]);
+    const [socket, setSocket] = useState(null);
+
+    useEffect(() => {
+    let newSocket;
+
+    if (!socket) {
+      newSocket = io.connect('/');
+      setSocket(newSocket);
+
+      newSocket.emit('join game', {
+        gameId: props.gameId,
+        username: props.currentUser.username
+      });
+    } else {
+      newSocket = socket;
+    }
+
+    // newSocket.on('new message', ({ username, msg, avatar }) => {
+    //   let message = [username, msg, avatar];
+    //   setMessages([...messages, message]);
+    // });
+
+    // return () => newSocket.off('new message');
+
+  }, [])
 
     return (
         <MainWrapper>
