@@ -53,9 +53,8 @@ router.patch('/:gameId/draw', (req, res) => {
     .then(game => {
       let newCard = game.deck.pop();
       newCard.hidden = false;
-      let playerCards = game.players;
-      playerCards[game.currentPlayerId].push(newCard);
-      game.players = playerCards;
+      game.players[game.currentPlayerId].push(newCard);
+      game.markModified('players');
       game.save().then(game => res.json(game));
     })
 })
@@ -64,9 +63,14 @@ router.patch('/:gameId/draw', (req, res) => {
 router.patch('/:gameId/turn', (req, res) => {
   Game.findById(req.params.gameId)
     .then(game => {
-      let players = game.players.keys;
-      let currentIdx = players.indexOf(game.currentPlayerId);
+      // debugger;
+      let players = Object.keys(game.players);
+      console.log(players);
+      let currentIdx = players.indexOf(`${game.currentPlayerId}`);
+      console.log(currentIdx);
+      console.log(game.currentPlayerId);
       game.currentPlayerId = players[((currentIdx + 1) % players.length)];
+      // game.markModified('currentPlayerId');
       game.save().then(game => res.json(game));
     })
 })
@@ -79,6 +83,7 @@ router.patch('/:gameId/newPlayer', (req, res) => {
       playerCards[0].hidden = false;
       playerCards[1].hidden = false;
       game.players[req.body.userId] = playerCards;
+      game.markModified('players');
       game.save().then(game = res.json(game));
     })
 })
