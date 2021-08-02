@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import styled from 'styled-components'
-import {Button} from '@material-ui/core'
+import styled from 'styled-components';
+import io from 'socket.io-client';
 
 const InformationWrapper = styled.div`
     width: 70%;
@@ -82,27 +82,34 @@ const Hand = ({hand}) => {
 }
 
 const Game = (props) => {
-    const [players, setPlayers] = useState([])
-    const [hand, setHand] = useState(['3C', '3D', '3H', '4S'])
-    // const Deck = ['2S', '2C', '2D', '2H', '3S', '3C', '3D', '3H', '4S', '4C', '4D', '4H', '5S', '5C', '5D', '5H', '6S', '6C', '6D', '6H', '7S', '7C', '7D', '7H', '8S', '8C', '8D', '8H', '9S', '9C', '9D', '9H', '10S', '10C', '10D', '10H', 'KS', 'KC', 'KD', 'KH', 'QS', 'QC', 'QD', 'QH', 'JS', 'JC', 'JD', 'JH', 'AS', 'AC', 'AD', 'AH']
-    // const [house, setHouse] = useState(['back', 'back'])
-    
+    const [balance, setBalance] = useState(1000);
+    const [hand, setHand] = useState([]);
+    const [players, setPlayers] = useState([]);
+    const [socket, setSocket] = useState(null);
+
     useEffect(() => {
-        // Componentdidmount
-        // Should connect to backend websocket and initialize the game
-    }, [])
-    
-    const startGame = () => {
-        // Should start the game, pings backend to start the game
+    let newSocket;
+
+    if (!socket) {
+      newSocket = io.connect('/');
+      setSocket(newSocket);
+
+      newSocket.emit('join game', {
+        gameId: props.gameId,
+        username: props.currentUser.username
+      });
+    } else {
+      newSocket = socket;
     }
 
-    const hit = () => {
-        // Hit action
-    }
+    // newSocket.on('new message', ({ username, msg, avatar }) => {
+    //   let message = [username, msg, avatar];
+    //   setMessages([...messages, message]);
+    // });
 
-    const stand = () => {
-        // Stand action
-    }
+    // return () => newSocket.off('new message');
+
+  }, [])
 
     return (
         <MainWrapper>
