@@ -1,19 +1,21 @@
-import { Button } from '@material-ui/core'
-import { useHistory } from 'react-router-dom'
+import React from 'react';
+import '../../styles/homepage.css';
 
-function Home() {
-    const hist = useHistory()
 
+class Home extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render() {
     return (
-      <div>
-        yo yo ma
-        {/* Placeholder for now, theoretically pressing this button should 
-        generate a new game on the backend and will push the currentuser to the url with that gameid */}
-        <Button variant="contained" color="primary" onClick={() => hist.push('/game')}>
-                    Click to enter game
-        </Button>
+      <div className="homepage">
+        <div>
+          Welcome User
+        </div>
       </div>
     )
+  }
 }
 
-export default Home
+export default Home;
