@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Button } from '@material-ui/core'
 import io from 'socket.io-client';
 
 const InformationWrapper = styled.div`
