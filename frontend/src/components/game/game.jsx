@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import {Button} from '@material-ui/core'
 
@@ -66,7 +66,7 @@ const MainWrapper = styled.div`
     align-items: center;
 `
 const Hand = ({hand}) => {
-    if (hand.length == 2) {
+    if (hand.length <= 2) {
         return (
             <StartHand>
                 {hand.map((card, index) => <img key={index} src={require('../../images/' + card + '.png').default} />)}
@@ -82,12 +82,28 @@ const Hand = ({hand}) => {
 }
 
 const Game = (props) => {
-    const [balance, setBalance] = useState(1000);
-    const [hand, setHand] = useState(['2D', '4H', '5C', '2S']);
-    const [players, setPlayers] = useState({});
-    const Deck = ['2S', '2C', '2D', '2H', '3S', '3C', '3D', '3H', '4S', '4C', '4D', '4H', '5S', '5C', '5D', '5H', '6S', '6C', '6D', '6H', '7S', '7C', '7D', '7H', '8S', '8C', '8D', '8H', '9S', '9C', '9D', '9H', '10S', '10C', '10D', '10H', 'KS', 'KC', 'KD', 'KH', 'QS', 'QC', 'QD', 'QH', 'JS', 'JC', 'JD', 'JH', 'AS', 'AC', 'AD', 'AH']
-    const [house, setHouse] = useState(['back', 'back'])
+    const [players, setPlayers] = useState([])
+    const [hand, setHand] = useState(['3C', '3D', '3H', '4S'])
+    // const Deck = ['2S', '2C', '2D', '2H', '3S', '3C', '3D', '3H', '4S', '4C', '4D', '4H', '5S', '5C', '5D', '5H', '6S', '6C', '6D', '6H', '7S', '7C', '7D', '7H', '8S', '8C', '8D', '8H', '9S', '9C', '9D', '9H', '10S', '10C', '10D', '10H', 'KS', 'KC', 'KD', 'KH', 'QS', 'QC', 'QD', 'QH', 'JS', 'JC', 'JD', 'JH', 'AS', 'AC', 'AD', 'AH']
+    // const [house, setHouse] = useState(['back', 'back'])
     
+    useEffect(() => {
+        // Componentdidmount
+        // Should connect to backend websocket and initialize the game
+    }, [])
+    
+    const startGame = () => {
+        // Should start the game, pings backend to start the game
+    }
+
+    const hit = () => {
+        // Hit action
+    }
+
+    const stand = () => {
+        // Stand action
+    }
+
     return (
         <MainWrapper>
             <Button variant='contained' color='primary'>
@@ -106,12 +122,7 @@ const Game = (props) => {
             </InformationWrapper>
             <PlayersWarpper>
                 <PlayerWarpper>
-                    {/* <StartHand>
-                        <img src={require('../../images/2S.png').default} />
-                        <img src={require('../../images/5S.png').default} />
-                    </StartHand> */}
                     <Hand hand={hand}/>
-                    <span>Balance: {balance}</span>
                 </PlayerWarpper>
                 <PlayerWarpper>
                     p2
