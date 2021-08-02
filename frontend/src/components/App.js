@@ -8,23 +8,9 @@ import Layout from './home/drawer';
 import SignupContainer from './auth/signup_container';
 import LoginContainer from './auth/login_container';
 import { AuthRoute, ProtectedRoute, DefaultRoute } from '../util/route_util'
+import Home from './home/home'
+import Game from './game/game'
 
-
-function HomeComponent() {
-  return (
-    <div>
-      yo yo ma
-    </div>
-  )
-}
-
-function GameComponent() {
-  return (
-    <div>
-      this is the game
-    </div>
-  )
-}
 
 function App() {
   return (
