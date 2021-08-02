@@ -8,7 +8,6 @@ import Layout from './home/drawer';
 import SignupContainer from './auth/signup_container';
 import LoginContainer from './auth/login_container';
 import { AuthRoute, ProtectedRoute, DefaultRoute } from '../util/route_util'
-import Home from './home/home'
 import Game from './game/game'
 
 
@@ -20,7 +19,7 @@ function App() {
         <AuthRoute exact path="/" component={Splash} />
         <AuthRoute path="/login" component={LoginContainer} />
         <AuthRoute path="/signup" component={SignupContainer} />
-        <ProtectedRoute exact path="/game" component={GameComponent} />
+        <ProtectedRoute exact path="/game" component={Game} />
         <Layout>
           <Switch>
             <ProtectedRoute exact path="/home" component={HomeContainer} />
