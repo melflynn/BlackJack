@@ -59,6 +59,18 @@ router.patch('/:gameId/draw', (req, res) => {
     })
 })
 
+//draw a card to house
+router.patch('/:gameId/drawHouse', (req, res) => {
+  Game.findById(req.params.gameId)
+    .then(game => {
+      let newCard = game.deck.pop();
+      newCard.hidden = false;
+      game.houseCards.push(newCard);
+      // game.markModified('players');
+      game.save().then(game => res.json(game));
+    })
+})
+
 //switch players
 router.patch('/:gameId/turn', (req, res) => {
   Game.findById(req.params.gameId)
