@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const createGame = () => {
-  return axios.post('/api/games');
+  return axios.post('/api/games/');
 }

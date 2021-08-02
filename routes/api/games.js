@@ -53,7 +53,9 @@ router.patch('/:gameId/draw', (req, res) => {
     .then(game => {
       let newCard = game.deck.pop();
       newCard.hidden = false;
-      game.players[game.currentPlayerId].push(newCard);
+      let playerCards = game.players;
+      playerCards[game.currentPlayerId].push(newCard);
+      game.players = playerCards;
       game.save().then(game => res.json(game));
     })
 })
@@ -66,6 +68,18 @@ router.patch('/:gameId/turn', (req, res) => {
       let currentIdx = players.indexOf(game.currentPlayerId);
       game.currentPlayerId = players[((currentIdx + 1) % players.length)];
       game.save().then(game => res.json(game));
+    })
+})
+
+//add a player to game
+router.patch('/:gameId/newPlayer', (req, res) => {
+  Game.findById(req.params.gameId)
+    .then(game => {
+      let playerCards = [game.deck.pop(), game.deck.pop()];
+      playerCards[0].hidden = false;
+      playerCards[1].hidden = false;
+      game.players[req.body.userId] = playerCards;
+      game.save().then(game = res.json(game));
     })
 })
 

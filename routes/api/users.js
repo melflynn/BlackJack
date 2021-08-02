@@ -51,12 +51,12 @@ router.post('/signup', (req, res) => {
                           });
                       });
                     })
-                    .then(() => {
-                      return res.status(200).json({
-                        username: newUser.username,
-                        password
-                      })
-                    })
+                    // .then(() => {
+                    //   return res.status(200).json({
+                    //     username: newUser.username,
+                    //     password
+                    //   })
+                    // })
                     .catch(err => console.log(err));
                 })
               })
