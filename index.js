@@ -10,6 +10,7 @@ const httpServer = http.Server(app);
 const io = socketIo(httpServer);
 
 const users = require('./routes/api/users');
+const games = require('./routes/api/games');
 
 mongoose 
   .connect(db, { useNewUrlParser: true })
@@ -24,6 +25,7 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 
 app.use("/api/users", users);
+app.use("/api/games", games);
 
 io.on('connection', (socket) => {
   socket.on('disconnect', () => {

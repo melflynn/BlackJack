@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
 const Game = require('../../models/Game');
-
+const Card = require('../../models/Card');
 
 const shuffleDeck = (deck) => {
   for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [deck[i], deck[j]] = [deck[j], deck[i]];
     }
 }
 
@@ -16,8 +17,8 @@ let deck = []
 cardSuits.forEach((suit) => {
   cardValues.forEach((value) => {
     let card = new Card({
+      name: `${value}${suit}`,
       value,
-      suit,
       hidden: true
     });
     deck.push(card);
@@ -25,23 +26,54 @@ cardSuits.forEach((suit) => {
 });
 shuffleDeck(deck);
 
-
-router.post('/', (req, res) => {
+//create a game
+router.post('/',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    let id = req.user._id;
     const newGame = new Game({
-      players: [req.body.user],
-      //need to shuffle
-      // deck: deck.shuffle();
+      players: {[id]: [deck.pop(), deck.pop()]},
+      currentPlayerId: id,
+      houseCards: [deck.pop(), deck.pop()],
+      deck: deck
     })
 
+    newGame.players[id][0].hidden = false;
+    newGame.players[id][1].hidden = false;
+    newGame.houseCards[0].hidden = false;
+
     newGame.save()
-      .then(game => res.json([]));
+      .then(game => res.json(game));
   }
+)
+
+//draw a card to current player
+router.patch('/:gameId/draw', (req, res) => {
+  Game.findById(req.params.gameId)
+    .then(game => {
+      let newCard = game.deck.pop();
+      newCard.hidden = false;
+      game.players[game.currentPlayerId].push(newCard);
+      game.save().then(game => res.json(game));
+    })
 })
 
+//switch players
+router.patch('/:gameId/turn', (req, res) => {
+  Game.findById(req.params.gameId)
+    .then(game => {
+      let players = game.players.keys;
+      let currentIdx = players.indexOf(game.currentPlayerId);
+      game.currentPlayerId = players[((currentIdx + 1) % players.length)];
+      game.save().then(game => res.json(game));
+    })
+})
+
+//fetch a game
 router.get('/:gameId', (req, res) => {
   Game.findById(req.params.gameId)
     .then((game) => res.json(game))
     .catch((err) => res.status(404).json({ noGameFound: 'No game found with that ID' }));
 })
+
+module.exports = router;

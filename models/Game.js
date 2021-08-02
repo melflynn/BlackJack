@@ -3,15 +3,24 @@ const Schema = mongoose.Schema;
 
 const GameSchema = new Schema({
   players: {
+    type: Object, 
+    required: true
+  },
+  currentPlayerId: {
+    type: Schema.Types.ObjectId,
+    ref: 'users',
+    required: true
+  },
+  houseCards: {
     type: Array, 
     required: true
   },
   deck: {
-    type: Object,
+    type: Array,
     required: true
-
-  },
+  }
+}, {
   timestamps: true
 })
 
-module.exports = Game = mongoose.mode('Game', GameSchema);
+module.exports = Game = mongoose.model('Game', GameSchema);
