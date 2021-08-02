@@ -27,23 +27,36 @@ const PlayerWarpper = styled.div`
     flex-direction: column;
     align-items: center;
 
-    div {
-        width: calc(100% - 20px);
-        display: flex;
-        justify-content: space-evenly;
-        margin: 20px 0;
-    }
+`
+const StartHand = styled.div`
+    width: calc(100% - 20px);
+    display: flex;
+    justify-content: space-evenly;
+    margin: 20px 0;
 
     img {
         height: 152px;
         width: 100px;
     }
 `
-const startHand = styled.div`
+const ShownHand = styled.div`
+    width: 150px;
+    display: flex;
+    margin: 20px 0;
 
-`
-const shownHand = styled.div`
+    div {
+        flex: 1 0 0;
+        overflow-x: hidden;
+    }
 
+    div:last-child {
+        flex: 0 0 auto;
+    }
+
+    img {
+        height: 152px;
+        width: 100px;
+    }
 `
 
 
@@ -52,7 +65,21 @@ const MainWrapper = styled.div`
     flex-direction: column;
     align-items: center;
 `
-
+const Hand = ({hand}) => {
+    if (hand.length <= 2) {
+        return (
+            <StartHand>
+                {hand.map((card, index) => <img key={index} src={require('../../images/' + card + '.png').default} />)}
+            </StartHand>
+        )
+    } return (
+        <ShownHand style={{width: `${(hand.length) * 50}px`}}>
+            {hand.map((card, index) => (<div key={index}>
+                    <img src={require('../../images/' + card + '.png').default} />
+                </div>))}
+        </ShownHand>
+    )
+}
 
 const Game = (props) => {
     const [balance, setBalance] = useState(1000);
@@ -86,9 +113,15 @@ const Game = (props) => {
 
     return (
         <MainWrapper>
+            <Button variant='contained' color='primary'>
+                Start
+            </Button>
             <InformationWrapper>
                 <div>
                     Moves
+                </div>
+                <div>
+                    House
                 </div>
                 <div>
                     Timer
@@ -96,11 +129,7 @@ const Game = (props) => {
             </InformationWrapper>
             <PlayersWarpper>
                 <PlayerWarpper>
-                    <div>
-                        <img src={require('../../images/2S.png').default} />
-                        <img src={require('../../images/5S.png').default} />
-                    </div>
-                    <span>Balance: {balance}</span>
+                    <Hand hand={hand}/>
                 </PlayerWarpper>
                 <PlayerWarpper>
                     p2

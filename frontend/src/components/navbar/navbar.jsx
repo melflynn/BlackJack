@@ -16,6 +16,8 @@ const StyledNav = styled.div`
     display: flex;
     justify-content: space-between;
     font-family: 'Roboto Mono', monospace;
+    position: relative;
+    z-index: 1201;
 
     > span {
         margin: auto 5px;
@@ -48,7 +50,7 @@ function NavBar({loggedIn, logout}) {
                 <Button variant="contained" color="primary" onClick={() => hist.push('/login')}>
                     Log in
                 </Button>
-                <Button variant="contained" color="primary" onClick={() => hist.push('/login')}>
+                <Button variant="contained" color="primary" onClick={() => hist.push('/signup')}>
                     Sign up
                 </Button>
             </div> :
