@@ -1,0 +1,21 @@
+.play-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+}
+
+.play-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.play-button {
+  margin-top: 15px;
+  padding: 12px;
+}
+
+.play-button:hover {
+  cursor: pointer;
+}

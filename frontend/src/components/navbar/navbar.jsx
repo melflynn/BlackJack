@@ -16,6 +16,8 @@ const StyledNav = styled.div`
     display: flex;
     justify-content: space-between;
     font-family: 'Roboto Mono', monospace;
+    position: relative;
+    z-index: 1201;
 
     > span {
         margin: auto 5px;
