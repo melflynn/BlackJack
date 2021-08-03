@@ -172,10 +172,8 @@ io.on('connection', (socket) => {
 })
 
 setInterval(() => {
-  console.log('clearing rooms')
   Object.keys(rooms).forEach((gameId) => {
     if (rooms[gameId].players.length == 1) {
-      console.log('removing game: ' + gameId)
       delete rooms[gameId]
     }
   })

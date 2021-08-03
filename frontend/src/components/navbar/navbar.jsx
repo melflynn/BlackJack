@@ -47,6 +47,9 @@ function NavBar({loggedIn, logout}) {
             <span onClick={() => hist.push('/')}>BLACKJACK</span>
             {!loggedIn ?
             <div>
+                <Button variant="contained" color="primary" onClick={() => hist.push('/about')}>
+                    About
+                </Button>
                 <Button variant="contained" color="primary" onClick={() => hist.push('/login')}>
                     Log in
                 </Button>

@@ -9,6 +9,7 @@ import SignupContainer from './auth/signup_container';
 import LoginContainer from './auth/login_container';
 import { AuthRoute, ProtectedRoute, DefaultRoute } from '../util/route_util';
 import GameContainer from './game/game_container';
+import About from './splash/about'
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <NavBar />
       <Switch>
         <AuthRoute exact path="/" component={Splash} />
+        <Route exact path='/about' component={About} />
         <AuthRoute path="/login" component={LoginContainer} />
         <AuthRoute path="/signup" component={SignupContainer} />
         <ProtectedRoute exact path="/game/:gameId" component={GameContainer} />
