@@ -10,16 +10,6 @@ const Splash = () => {
             <div className="get-started">
                 <button className="get-started-button" onClick={() => hist.push('/signup')}>get started</button>
             </div>
-            <div className="rules">
-                <h3 className="rules-header">Rules of BlackJack</h3>
-                <p className="rules-bullet">1. Something something something something</p>
-                <p className="rules-bullet">2. Something something something something</p>
-                <p className="rules-bullet">4. Something something something something</p>
-                <p className="rules-bullet">5. Something something something something</p>
-                <p className="rules-bullet">6. Something something something something</p>
-                <p className="rules-bullet">7. Something something something something</p>
-                <p className="rules-bullet">8. Something something something something</p>
-            </div>
         </div>
     )
 }
