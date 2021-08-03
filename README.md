@@ -6,6 +6,13 @@ BlackJack is a website made for the purpose of playing BlackJack with other peop
 
 BlackJack was made for mintbean hackathon to show frontend and backend skills.
 
+## Frameworks
+Made on MongoDB, Express, React, and Node.
+
+# Features
+- User authentication
+- Multiplayer game connection
+
 ## What did we learn?
 
 For this project we implemented various technologies.
