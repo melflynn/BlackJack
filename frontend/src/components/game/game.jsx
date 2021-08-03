@@ -136,6 +136,8 @@ const Game = (props) => {
             }
             if (myhand.reduce((acc, curr) => acc + curr.value, 0) > house.reduce((acc, curr) => acc + curr.value, 0)) {
                 return 'won'
+            } else if (myhand.reduce((acc, curr) => acc + curr.value, 0) === house.reduce((acc, curr) => acc + curr.value, 0)) {
+                return 'draw'
             } else {
                 return 'lost'
             }
