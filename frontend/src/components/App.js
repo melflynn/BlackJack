@@ -8,7 +8,6 @@ import Layout from './home/drawer';
 import SignupContainer from './auth/signup_container';
 import LoginContainer from './auth/login_container';
 import { AuthRoute, ProtectedRoute, DefaultRoute } from '../util/route_util';
-import Home from './home/home';
 import GameContainer from './game/game_container';
 
 

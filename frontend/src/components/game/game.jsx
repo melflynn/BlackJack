@@ -4,9 +4,9 @@ import { Button } from '@material-ui/core'
 import io from 'socket.io-client';
 
 const InformationWrapper = styled.div`
-    width: 70%;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    
 `
 
 const PlayersWarpper = styled.div`
@@ -83,70 +83,127 @@ const Hand = ({hand}) => {
 }
 
 const Game = (props) => {
-    const [balance, setBalance] = useState(1000);
-    const [hand, setHand] = useState([]);
-    const [players, setPlayers] = useState([]);
     const [socket, setSocket] = useState(null);
+    const [gameState, setGameState] = useState(null);
 
     useEffect(() => {
-    let newSocket;
+        let newSocket;
+        if (!socket) {
+            newSocket = io.connect('/');
+            setSocket(newSocket);
 
-    if (!socket) {
-      newSocket = io.connect('/');
-      setSocket(newSocket);
+            newSocket.emit('join game', {
+                gameId: props.gameId,
+                username: props.currentUser.username
+            });
+        } else {
+            newSocket = socket;
+        }
 
-      newSocket.emit('join game', {
-        gameId: props.gameId,
-        username: props.currentUser.username
-      });
-    } else {
-      newSocket = socket;
+        newSocket.on('new message', (payload) => {
+            setGameState(JSON.parse(payload))
+        });
+
+    }, [])
+
+    const startGame = (e) => {
+        e.preventDefault();
+        socket.emit('start game', {game: 'testing'})
     }
 
-    // newSocket.on('new message', ({ username, msg, avatar }) => {
-    //   let message = [username, msg, avatar];
-    //   setMessages([...messages, message]);
-    // });
+    const hit = (e) => {
+        e.preventDefault();
+        socket.emit('hit')
+    }
 
-    // return () => newSocket.off('new message');
+    const stand = (e) => {
+        e.preventDefault();
+        socket.emit('stand')
+    }
 
-  }, [])
+    const restartGame = (e) => {
+        e.preventDefault();
+        socket.emit('restart game')
+    }
 
-    return (
+
+    const calcWon = (myhand, house) => {
+        if (myhand.reduce((acc, curr) => acc + curr.value, 0) > 21) {
+            return 'lost'
+        } else {
+            if (house.reduce((acc, curr) => acc + curr.value, 0) > 21) {
+                return 'won'
+            }
+            if (myhand.reduce((acc, curr) => acc + curr.value, 0) > house.reduce((acc, curr) => acc + curr.value, 0)) {
+                return 'won'
+            } else {
+                return 'lost'
+            }
+        }
+    }
+
+    return (gameState && (
         <MainWrapper>
-            <Button variant='contained' color='primary'>
-                Start
-            </Button>
             <InformationWrapper>
                 <div>
                     Moves
+                    {gameState.players[gameState.currentPlayer].username === props.currentUser.username && gameState.gameState != 'waiting' &&
+                    <div>
+                        <Button variant='contained' color='primary' onClick={(e) => hit(e)}>
+                            Hit
+                        </Button>
+                        <Button variant='contained' color='primary' onClick={(e) => stand(e)}>
+                            Stand
+                        </Button>
+                    </div>}
+                </div>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                    <PlayerWarpper style={gameState.currentPlayer === 0 ? {backgroundColor: 'lightgreen'} : {}}>
+                        House
+                        {gameState.currentPlayer === 0 ?
+                            <Hand hand={gameState.players[0].hand.map((card) => (card.name))} /> 
+                            :
+                            <Hand hand={['back', gameState.players[0].hand[1].name]}/> 
+                        }
+                        {gameState.currentPlayer === 0 ?
+                            `Value: ${gameState.players[0].hand.reduce((acc, curr) => acc + curr.value, 0)}`
+                            : null}
+                    </PlayerWarpper>
+                    <div>
+                        {gameState.gameState == 'waiting' && 
+                        <Button variant='contained' color='primary' onClick={(e) => startGame(e)}>
+                            Start
+                        </Button>}
+
+                        {gameState.gameState == 'finished' &&
+                        <Button variant='contained' color='primary' onClick={(e) => restartGame(e)}>
+                            Restart
+                        </Button>}
+                    </div>
                 </div>
                 <div>
-                    House
-                </div>
-                <div>
-                    Timer
                 </div>
             </InformationWrapper>
             <PlayersWarpper>
-                <PlayerWarpper>
-                    <Hand hand={hand}/>
-                </PlayerWarpper>
-                <PlayerWarpper>
-                    p2
-                </PlayerWarpper>
-                <PlayerWarpper>
-                    me
-                </PlayerWarpper>
-                <PlayerWarpper>
-                    p4
-                </PlayerWarpper>
-                <PlayerWarpper>
-                    p5
-                </PlayerWarpper>
+                {gameState.players.slice(1).map((player, index) => (
+                    <PlayerWarpper key={index} style={{backgroundColor: gameState.players[gameState.currentPlayer].username === player.username ? 'lightgrey' : null}}>
+                        {player.username}
+                        <Hand hand={player.hand.map((card) => (card.name))} />
+                        {player.hand.reduce((acc, curr) => acc + curr.value, 0) > 21 ? 'Bust' : `Value: ${player.hand.reduce((acc, curr) => acc + curr.value, 0)}`}
+                        <div>
+                            {gameState.gameState == 'finished' ? calcWon(player.hand, gameState.players[0].hand) : null}
+                        </div>
+                    </PlayerWarpper>
+                ))}
+
+                {new Array(5 - gameState.players.length + 1).fill(0).map((_, index) => (
+                    <PlayerWarpper key={index}>
+                        Empty Seat
+                    </PlayerWarpper>))
+                }
             </PlayersWarpper>
         </MainWrapper>
-    )
+    ))
 }
 
 export default Game
