@@ -71,7 +71,7 @@ const LinkWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 200px 0 0;
+    margin: 20vh 0 0;
 `
 const Hand = ({hand}) => {
     if (hand.length <= 2) {
