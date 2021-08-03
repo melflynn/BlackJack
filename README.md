@@ -10,8 +10,8 @@ BlackJack was made for mintbean hackathon to show frontend and backend skills.
 Made on MongoDB, Express, React, and Node.
 
 # Features
-- User authentication
-- Multiplayer game connection
+- User authentication, users are able to login and signup.
+- Multiplayer, users are able to invite other users to join their game through a randomly generated link. They are then able to play blackjack in the same session.
 
 ## What did we learn?
 
