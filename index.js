@@ -64,7 +64,7 @@ const resetGame = (oldGame) => {
     players: [house].concat(oldPlayers),
     deck: gameDeck,
     currentPlayer: 1,
-    gameState: 'waiting',
+    gameState: 'playing',
   }
   return game
 }

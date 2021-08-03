@@ -66,6 +66,13 @@ const MainWrapper = styled.div`
     flex-direction: column;
     align-items: center;
 `
+
+const LinkWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 200px 0 0;
+`
 const Hand = ({hand}) => {
     if (hand.length <= 2) {
         return (
@@ -186,9 +193,15 @@ const Game = (props) => {
                 <div>
                 </div>
             </InformationWrapper>
+            <LinkWrapper>
+                To Invite someone, simply copy the link below and send it to them.
+                <span>
+                    {`https://blackjack-mintbean.herokuapp.com/#/game/${props.gameId}`}
+                </span>
+            </LinkWrapper>
             <PlayersWarpper>
                 {gameState.players.slice(1).map((player, index) => (
-                    <PlayerWarpper key={index} style={{backgroundColor: gameState.players[gameState.currentPlayer].username === player.username ? 'lightgrey' : null}}>
+                    <PlayerWarpper key={index} style={{backgroundColor: gameState.players[gameState.currentPlayer].username === player.username ? 'lightgreen' : null}}>
                         {player.username}
                         <Hand hand={player.hand.map((card) => (card.name))} />
                         {player.hand.reduce((acc, curr) => acc + curr.value, 0) > 21 ? 'Bust' : `Value: ${player.hand.reduce((acc, curr) => acc + curr.value, 0)}`}
