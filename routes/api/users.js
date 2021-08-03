@@ -32,6 +32,7 @@ router.post('/signup', (req, res) => {
                 username: req.body.username,
                 password: req.body.password
               })
+              console.log(newUser)
       
               bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newUser.password, salt, (err, hash) => {
