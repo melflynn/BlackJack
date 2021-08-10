@@ -1,10 +1,12 @@
 # BlackJack
 
-BlackJack is a website made for the purpose of playing BlackJack with other people from around the world.
+BlackJack is a website made for the purpose of playing BlackJack with other people from around the world.  
+[Click here to see live](https://blackjack-mintbean.herokuapp.com/#/)
 
 ## Motivations
 
-BlackJack was made for mintbean hackathon to show frontend and backend skills.
+BlackJack was made for the mintbean hackathon to showcase frontend and backend skills.  
+[MintBean hackathon](https://mintbean.io/meets/7e2331fb-1e0d-4b31-86b9-a46acad877af)
 
 ## Frameworks
 Made on MongoDB, Express, React, and Node.
