@@ -14,8 +14,11 @@ function Play() {
         <div className="play-container">
           Click here to start a game
           <Button variant="contained" color="primary" className="play-button" onClick={() => history.push(`/game/${rng()}`)}>
-            Play
+            Start New Game
           </Button>
+        </div>
+        <div>
+          
         </div>
     </div>
   )
